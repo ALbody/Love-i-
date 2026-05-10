@@ -760,4 +760,99 @@ function animateHeart() {
     heartPath.style.strokeDashoffset = '1000';
 
     // Force reflow
-    void hear
+    void heartPath.offsetWidth;
+
+    heartPath.classList.add('drawn');
+    heartGlow.classList.add('active');
+
+    setTimeout(() => {
+        heartPath.classList.add('filled');
+    }, 1500);
+
+    createSparkles();
+}
+
+// ===== LAMP ACTIVATION =====
+function activateLamp() {
+    isLampOn = true;
+    lampBulb.classList.add('glowing');
+    lightCone.classList.add('active');
+    lightGlowOuter.classList.add('active');
+}
+
+// ===== STRING SHAKE =====
+function shakeString() {
+    stringContainer.classList.remove('shaking');
+    void stringContainer.offsetWidth;
+    stringContainer.classList.add('shaking');
+
+    setTimeout(() => {
+        stringContainer.classList.remove('shaking');
+    }, 600);
+}
+
+// ===== MAIN INTERACTION =====
+function triggerLove() {
+    // Play audio
+    playAudio();
+
+    // Shake string
+    shakeString();
+
+    // Activate lamp
+    activateLamp();
+
+    // Create particles
+    createParticles();
+
+    // Type message
+    const message = messages[currentMessageIndex % messages.length];
+    typeMessage(message);
+
+    // Update counter
+    currentMessageIndex++;
+    counter.textContent = `Moment ${currentMessageIndex} of ${messages.length}`;
+
+    // Animate heart
+    animateHeart();
+
+    // Hide hint after first interaction
+    if (currentMessageIndex === 1) {
+        hintText.style.opacity = '0';
+        hintText.style.transition = 'opacity 1s ease';
+    }
+
+    // Create ripple from ball position
+    const ballRect = pullBall.getBoundingClientRect();
+    createRipple(ballRect.left + ballRect.width/2, ballRect.top + ballRect.height/2);
+}
+
+// ===== EVENT LISTENERS =====
+pullBall.addEventListener('click', triggerLove);
+pullBall.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    triggerLove();
+});
+
+// ===== AMBIENT BACKGROUND PARTICLES =====
+function createAmbientParticles() {
+    const container = document.getElementById('ambient-container');
+
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'ambient-particle';
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (10 + Math.random() * 10) + 's';
+        container.appendChild(particle);
+    }
+}
+
+createAmbientParticles();
+
+// ===== INITIAL STATE =====
+counter.textContent = 'Pull the string to begin';
+</script>
+
+</body>
+</html>
